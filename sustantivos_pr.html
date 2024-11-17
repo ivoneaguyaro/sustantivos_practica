@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prática de Gêneros</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-4">Prática de Gêneros</h1>
+        <p id="instruction" class="mb-4">Colocar o artigo definido correspondente</p>
+        <div class="mb-4">
+            <img id="noun-image" src="" alt="Imagem do substantivo" class="w-full h-48 object-cover mb-4">
+            <p id="noun" class="text-xl font-semibold"></p>
+        </div>
+        <input type="text" id="article-input" class="border p-2 w-full mb-4" placeholder="Digite o artigo">
+        <button id="check-button" class="bg-blue-500 text-white p-2 rounded w-full">Verificar</button>
+        <p id="feedback" class="mt-4"></p>
+        <button id="next-button" class="bg-green-500 text-white p-2 rounded w-full hidden">Próximo</button>
+    </div>
+
+    <script>
+        const nouns = [
+            { word: 'casa', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'perro', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'niños', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'mujeres', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'libro', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'manzana', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'árboles', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'flores', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'gato', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'mesa', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'niña', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'hombres', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'pájaros', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'ciudad', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'carro', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'bicicleta', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'puerta', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'ventanas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'niño', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'mujer', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'hombre', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'niñas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'libros', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'manzanas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'árbol', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'flor', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'gatos', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'mesas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'ciudades', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'carros', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'bicicletas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'puertas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'ventana', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'pájaro', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'niños', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'mujeres', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'hombres', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'pájaros', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'ciudad', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'carro', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'bicicleta', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'puerta', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'ventanas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'niño', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'mujer', article: 'la', image: 'https://via.placeholder.com/150' },
+            { word: 'hombre', article: 'el', image: 'https://via.placeholder.com/150' },
+            { word: 'niñas', article: 'las', image: 'https://via.placeholder.com/150' },
+            { word: 'libros', article: 'los', image: 'https://via.placeholder.com/150' },
+            { word: 'manzanas', article: 'las', image: 'https://via.placeholder.com/150' },
+        ];
+
+        let currentNounIndex = 0;
+        let useDefiniteArticle = true;
+
+        function loadNoun() {
+            const noun = nouns[currentNounIndex];
+            document.getElementById('noun').textContent = noun.word;
+            document.getElementById('noun-image').src = noun.image;
+            document.getElementById('article-input').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('next-button').classList.add('hidden');
+            document.getElementById('instruction').textContent = useDefiniteArticle ? 'Colocar o artigo definido correspondente' : 'Colocar o artigo indefinido correspondente';
+        }
+
+        document.getElementById('check-button').addEventListener('click', () => {
+            const input = document.getElementById('article-input').value.trim().toLowerCase();
+            const noun = nouns[currentNounIndex];
+            const correctArticle = useDefiniteArticle ? noun.article : (noun.article === 'el' ? 'un' : noun.article === 'la' ? 'uma' : noun.article === 'los' ? 'uns' : 'umas');
+            if (input === correctArticle) {
+                document.getElementById('feedback').textContent = '¡Correcto! 🎉';
+                document.getElementById('next-button').classList.remove('hidden');
+            } else {
+                document.getElementById('feedback').textContent = 'Intenta de nuevo.';
+            }
+        });
+
+        document.getElementById('next-button').addEventListener('click', () => {
+            currentNounIndex = (currentNounIndex + 1) % nouns.length;
+            useDefiniteArticle = !useDefiniteArticle;
+            loadNoun();
+        });
+
+        loadNoun();
+    </script>
+</body>
+</html>
